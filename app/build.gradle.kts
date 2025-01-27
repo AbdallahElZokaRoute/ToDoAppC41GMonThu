@@ -6,12 +6,12 @@ plugins {
 
 android {
     namespace = "com.route.todoappc41gmonthu"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.route.todoappc41gmonthu"
         minSdk = 23
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
