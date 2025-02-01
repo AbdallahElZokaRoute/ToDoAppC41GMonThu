@@ -7,7 +7,9 @@ plugins {
 android {
     namespace = "com.route.todoappc41gmonthu"
     compileSdk = 35
-
+    buildFeatures {
+        viewBinding = true
+    }
     defaultConfig {
         applicationId = "com.route.todoappc41gmonthu"
         minSdk = 23
@@ -39,7 +41,7 @@ android {
 dependencies {
     implementation(libs.androidx.room.runtime)
     ksp(libs.androidx.room.compiler)
-
+    implementation(libs.calendar.view)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
