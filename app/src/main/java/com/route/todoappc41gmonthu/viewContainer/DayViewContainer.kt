@@ -1,15 +1,26 @@
 package com.route.todoappc41gmonthu.viewContainer
 
 import android.os.Build
+import android.util.Log
 import android.view.View
 import com.kizitonwose.calendar.core.WeekDay
 import com.kizitonwose.calendar.view.ViewContainer
 import com.kizitonwose.calendar.view.WeekDayBinder
+import com.route.todoappc41gmonthu.R
 import com.route.todoappc41gmonthu.databinding.ItemWeekDayBinding
+import java.time.LocalDate
 import java.time.format.TextStyle
 import java.util.Locale
 
-class CustomWeekDayBinder : WeekDayBinder<DayViewContainer> {
+//                       (Inputs) -> Output
+
+
+class CustomWeekDayBinder(
+    val selectedTextColor: Int,
+    val unselectedTextColor: Int,
+    val onDateSelected: (WeekDay) -> Unit
+) : WeekDayBinder<DayViewContainer> {
+    var selectedDate: LocalDate? = null
     override fun bind(container: DayViewContainer, data: WeekDay) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             container.weekDayNameText.text = data.date.dayOfWeek.getDisplayName(
@@ -17,6 +28,17 @@ class CustomWeekDayBinder : WeekDayBinder<DayViewContainer> {
                 Locale.getDefault()
             )
             container.monthDayNameText.text = "${data.date.dayOfMonth}"
+            if (selectedDate == data.date) {
+                container.weekDayNameText.setTextColor(selectedTextColor)
+                container.monthDayNameText.setTextColor(selectedTextColor)
+            } else {
+                container.weekDayNameText.setTextColor(unselectedTextColor)
+                container.monthDayNameText.setTextColor(unselectedTextColor)
+            }
+
+            container.view.setOnClickListener {
+                onDateSelected(data)
+            }
         }
     }
 

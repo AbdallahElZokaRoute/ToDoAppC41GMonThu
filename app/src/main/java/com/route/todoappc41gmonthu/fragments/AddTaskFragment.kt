@@ -9,6 +9,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.route.todoappc41gmonthu.database.TasksDatabase
 import com.route.todoappc41gmonthu.database.model.Task
 import com.route.todoappc41gmonthu.databinding.FragmentAddTaskBinding
+import com.route.todoappc41gmonthu.fragments.callbacks.OnTaskAddedListener
 import java.time.LocalDate
 import java.util.Calendar
 import java.util.Date
@@ -16,6 +17,7 @@ import java.util.Date
 class AddTaskFragment : BottomSheetDialogFragment() {
     private lateinit var binding: FragmentAddTaskBinding
     private lateinit var calendar: Calendar
+    var onTaskAddedListener: OnTaskAddedListener? = null
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -42,6 +44,7 @@ class AddTaskFragment : BottomSheetDialogFragment() {
             requireContext(),
             { view, year, month, dayOfMonth ->
                 calendar.setDate(year, month, dayOfMonth)
+                calendar.clearTime()
                 binding.selectDateTv.text = "${dayOfMonth}/${month + 1}/${year}"
             },
             calendar.get(Calendar.YEAR),
@@ -68,6 +71,7 @@ class AddTaskFragment : BottomSheetDialogFragment() {
         TasksDatabase.getInstance().getTaskDao().insertTask(
             Task(title = binding.title.text.toString(), date = calendar.time)
         )
+        onTaskAddedListener?.onTaskAdded()
         dismiss()
     }
 }

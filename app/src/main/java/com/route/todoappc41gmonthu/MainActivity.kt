@@ -11,20 +11,30 @@ import com.route.todoappc41gmonthu.databinding.ActivityMainBinding
 import com.route.todoappc41gmonthu.fragments.AddTaskFragment
 import com.route.todoappc41gmonthu.fragments.SettingsFragment
 import com.route.todoappc41gmonthu.fragments.TaskListFragment
+import com.route.todoappc41gmonthu.fragments.callbacks.OnTaskAddedListener
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
+    private lateinit var taskListFragment: TaskListFragment
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        taskListFragment = TaskListFragment()
         binding.addTaskFab.setOnClickListener {
-            AddTaskFragment().show(supportFragmentManager, null)
+            val addTaskFragment =
+                AddTaskFragment()
+            addTaskFragment.onTaskAddedListener = OnTaskAddedListener {
+                // Logic
+                // taskListFragment should Refresh Itself
+                taskListFragment.getTasksFromDataBase()
+            }
+            addTaskFragment.show(supportFragmentManager, null)
         }
         binding.todoBottomNavigationView.setOnItemSelectedListener {
             when (it.itemId) {
                 R.id.navigation_task_list -> {
-                    showFragment(TaskListFragment())
+                    showFragment(taskListFragment)
                 }
 
                 R.id.navigation_settings -> {
